@@ -83,7 +83,7 @@ fprintf('Running gradient descent ...\n');
 
 % ====================== MY CODE TO FIND ALPHA ===============
 
-num_iters = 50;
+num_iters = 100;
 colours = ['k', 'r', 'g', 'b', 'm'];
 alpha = [0.01, 0.03, 0.1, 0.3, 1];
 figure(1);
@@ -132,7 +132,11 @@ theta = zeros(size(X, 2), 1);
 theta = gradientDescentMulti(X, y, theta, 0.1, 500);
 
 % Find predicted price
-price = [1, 1650, 3] * theta;
+house = [1650, 3];
+
+% Normalise features
+house = (house - mu) ./ sigma;
+price = [1, house] * theta;
 
 % ============================================================
 
@@ -176,8 +180,9 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
 
+price = 0; % You should change this
+price = [1, 1650, 3] * theta;
 
 % ============================================================
 
