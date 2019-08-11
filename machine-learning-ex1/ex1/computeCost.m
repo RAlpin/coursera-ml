@@ -16,7 +16,3 @@ J = 0;
 h = hypothesis(X, theta);
 J = (1 / (2 * m)) * sum((sum(h, 2) - y) .^ 2);
 end
-
-function h = hypothesis(X, theta)
-  h = theta' .* X;
-end
