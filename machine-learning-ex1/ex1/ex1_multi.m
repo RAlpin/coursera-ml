@@ -81,24 +81,37 @@ X = [ones(m, 1) X];
 
 fprintf('Running gradient descent ...\n');
 
-% Choose some alpha value
-alpha = 0.01;
-num_iters = 400;
+% ====================== MY CODE TO FIND ALPHA ===============
 
-% Init Theta and Run Gradient Descent 
-theta = zeros(3, 1);
-[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+num_iters = 50;
+colours = ['k', 'r', 'g', 'b', 'm'];
+alpha = [0.01, 0.03, 0.1, 0.3, 1];
+figure(1);
+clf;
+hold on;
 
-% Plot the convergence graph
-figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
+for i = 1:length(alpha)
+
+  % Init Theta and run gradient descent 
+  theta = zeros(3, 1);
+  [theta, J_history] = gradientDescentMulti(X, y, theta, alpha(i), num_iters);
+
+  % Plot the convergence graph
+  plot(1:numel(J_history), J_history, colours(i), 'LineWidth', 2);
+
+  % Display gradient descent's result
+  fprintf('Theta computed from gradient descent: \n');
+  fprintf(' %f \n', theta);
+  fprintf('\n');
+end
+
+title('Alpha Value Convergence in Gradient Descent');
 xlabel('Number of iterations');
 ylabel('Cost J');
+l = legend({'0.01', '0.03', '0.1', '0.3', '1'});
+legend(l, 'location', 'northeastoutside');
+set (l, 'fontsize', 15);
 
-% Display gradient descent's result
-fprintf('Theta computed from gradient descent: \n');
-fprintf(' %f \n', theta);
-fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
@@ -106,6 +119,20 @@ fprintf('\n');
 % not need to be normalized.
 price = 0; % You should change this
 
+% Load and normalise data
+data = load('ex1data2.txt');
+X = data(:, 1:2);
+y = data(:, 3);
+m = length(y);
+[X mu sigma] = featureNormalize(X);
+X = [ones(m, 1) X];
+
+% Start with theta as zeros
+theta = zeros(size(X, 2), 1);
+theta = gradientDescentMulti(X, y, theta, 0.1, 500);
+
+% Find predicted price
+price = [1, 1650, 3] * theta;
 
 % ============================================================
 
@@ -156,4 +183,3 @@ price = 0; % You should change this
 
 fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
          '(using normal equations):\n $%f\n'], price);
-
